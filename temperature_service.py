@@ -31,7 +31,7 @@ class Database:
     @staticmethod
     def read_circuits(connection: pymssql._pymssql.Connection) -> List[str]:
         # query = "SELECT TOP 3 * FROM BT1110 WHERE CHNCDE = 1 ORDER BY OPTSTR ASC"
-        query = "SELECT CIRCDE FROM BT1110 WHERE CHNCDE = 1 AND NUMBER = 10 ORDER BY OPTSTR ASC"
+        query = "SELECT DISTINCT STRDST FROM CT1020 WHERE STRDST = 0"
         with connection.cursor() as cursor:
             cursor.execute(query)
             rows = cursor.fetchall()
@@ -58,6 +58,15 @@ class Database:
             group_of_temperature = [Temperature(datetime.fromisoformat(row[0]), convert_temperature_bytes(row[3])) for
                                     row in rows]
             return circuit_name, group_of_temperature
+
+    @staticmethod
+    def read_ct1010_data(connection: pymssql._pymssql.Connection, circuit_name, start_time, end_time) -> List[
+        Temperature]:
+        query = f"SELECT * FROM CT1020 WHERE STRDST = '{circuit_name}' AND DATTME > '{start_time}' ORDER BY DATTME"
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            return [Temperature(datetime.fromisoformat(row[0]), convert_temperature_bytes(row[3])) for row in
+                    cursor.fetchall()]
 
     @staticmethod
     def get_reading_temperature_query(table_name, circuit_name, start_time, end_time):
