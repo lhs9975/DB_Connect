@@ -38,9 +38,9 @@ class Database:
             return [row[0] for row in rows]
 
     @staticmethod
-    def read_ct1020_data(connection: pymssql._pymssql.Connection, circuit_name, start_time, end_time) -> Tuple[
+    def read_ct1010_data(connection: pymssql._pymssql.Connection, circuit_name, start_time, end_time) -> Tuple[
         str, List[Temperature]]:
-        query = Database.get_reading_temperature_query('CT1020', circuit_name, start_time, end_time)
+        query = Database.get_reading_temperature_query('CT1010', circuit_name, start_time, end_time)
         with (connection.cursor() as cursor):
             cursor.execute(query)
             rows = cursor.fetchall()
@@ -60,9 +60,9 @@ class Database:
             return circuit_name, group_of_temperature
 
     @staticmethod
-    def read_ct1010_data(connection: pymssql._pymssql.Connection, circuit_name, start_time, end_time) -> List[
+    def read_ct1020_data(connection: pymssql._pymssql.Connection, circuit_name, start_time, end_time) -> List[
         Temperature]:
-        query = f"SELECT * FROM CT1020 WHERE STRDST = '{circuit_name}' AND DATTME > '{start_time}' ORDER BY DATTME"
+        query = f"SELECT * FROM CT1020 WHERE CIRCDE = 'test' AND DATTME > '{start_time}' ORDER BY DATTME"
         with connection.cursor() as cursor:
             cursor.execute(query)
             return [Temperature(datetime.fromisoformat(row[0]), convert_temperature_bytes(row[3])) for row in
