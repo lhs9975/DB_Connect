@@ -62,7 +62,7 @@ class Database:
     @staticmethod
     def read_ct1020_data(connection: pymssql._pymssql.Connection, circuit_name, start_time, end_time) -> List[
         Temperature]:
-        query = f"SELECT * FROM CT1020 WHERE CIRCDE = 'test' AND DATTME > '{start_time}' ORDER BY DATTME"
+        query = f"SELECT * FROM CT1020 WHERE CIRCDE = 'test02' AND DATTME > '{start_time}' ORDER BY DATTME"
         with connection.cursor() as cursor:
             cursor.execute(query)
             return [Temperature(datetime.fromisoformat(row[0]), convert_temperature_bytes(row[3])) for row in
