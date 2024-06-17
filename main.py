@@ -57,7 +57,7 @@ def process_time_range(con, circuit_code, start_time, end_time):
 if __name__ == '__main__':
     con = Database.create_db_connection()
     group_of_circuit_code = Database.read_circuits(con)
-    current_date = datetime.datetime(2024, 6, 12, 11, 20, 0)
+    current_date = datetime.datetime(2024, 6, 14, 12, 30, 0)
 
     all_data_frames = []
 
@@ -68,8 +68,8 @@ if __name__ == '__main__':
 
     if all_data_frames:
         combined_df = pd.concat(all_data_frames, axis=1)
-        combined_filename = 'data.csv'
-        combined_df.to_csv(f'{project_root_dir_path}/data/GS_ENR_CH2_5_31_6_5/{combined_filename}', index=False)
+        combined_filename = '5_hour.csv'
+        combined_df.to_csv(f'{project_root_dir_path}/data/GS_ENR_0.25/{combined_filename}', index=False)
         print(f'All data saved in {combined_filename}')
 
 
